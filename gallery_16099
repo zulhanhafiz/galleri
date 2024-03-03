@@ -1,0 +1,177 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.0
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Jan 29, 2024 at 05:10 AM
+-- Server version: 10.4.24-MariaDB
+-- PHP Version: 7.4.29
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `gallery_16099`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `comment_log`
+--
+
+CREATE TABLE `comment_log` (
+  `id_comment` int(11) NOT NULL,
+  `comment` varchar(50) NOT NULL,
+  `id_photo` int(11) NOT NULL,
+  `userID_guest` int(11) NOT NULL,
+  `username_guest` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gallery`
+--
+
+CREATE TABLE `gallery` (
+  `id_photo` int(11) NOT NULL,
+  `describe_photo` varchar(50) NOT NULL,
+  `time_upload` datetime NOT NULL,
+  `like_post` varchar(50) NOT NULL,
+  `userID` int(11) NOT NULL,
+  `status` enum('aktif','banned') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `profile`
+--
+
+CREATE TABLE `profile` (
+  `profileID` int(11) NOT NULL,
+  `userID` int(11) NOT NULL,
+  `describe_profile` varchar(50) NOT NULL,
+  `link_acc` varchar(50) NOT NULL,
+  `photo_profile` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user`
+--
+
+CREATE TABLE `user` (
+  `userID` int(11) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(50) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `nama_lengkap` varchar(50) NOT NULL,
+  `level` enum('admin','user') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`userID`, `username`, `password`, `email`, `nama_lengkap`, `level`) VALUES
+(1, 'jaluuu', 'jaluuu', 'jalu@gmail.com', 'arya jalu', 'admin'),
+(2, 'taufiq', '123', 'taufiq123@gmail.com', 'topik', 'user'),
+(10, 'zulhan', '123', 'zulhanhafiz08@gmail.com', 'zulhanhafiz', 'admin');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `comment_log`
+--
+ALTER TABLE `comment_log`
+  ADD PRIMARY KEY (`id_comment`),
+  ADD KEY `id_photo` (`id_photo`),
+  ADD KEY `userID_guest` (`userID_guest`);
+
+--
+-- Indexes for table `gallery`
+--
+ALTER TABLE `gallery`
+  ADD PRIMARY KEY (`id_photo`),
+  ADD KEY `userID` (`userID`);
+
+--
+-- Indexes for table `profile`
+--
+ALTER TABLE `profile`
+  ADD PRIMARY KEY (`profileID`),
+  ADD KEY `userID` (`userID`);
+
+--
+-- Indexes for table `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`userID`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `comment_log`
+--
+ALTER TABLE `comment_log`
+  MODIFY `id_comment` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `gallery`
+--
+ALTER TABLE `gallery`
+  MODIFY `id_photo` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `profile`
+--
+ALTER TABLE `profile`
+  MODIFY `profileID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `user`
+--
+ALTER TABLE `user`
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `comment_log`
+--
+ALTER TABLE `comment_log`
+  ADD CONSTRAINT `comment_log_ibfk_1` FOREIGN KEY (`userID_guest`) REFERENCES `user` (`userID`),
+  ADD CONSTRAINT `comment_log_ibfk_2` FOREIGN KEY (`id_photo`) REFERENCES `gallery` (`id_photo`);
+
+--
+-- Constraints for table `gallery`
+--
+ALTER TABLE `gallery`
+  ADD CONSTRAINT `gallery_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`);
+
+--
+-- Constraints for table `profile`
+--
+ALTER TABLE `profile`
+  ADD CONSTRAINT `profile_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
